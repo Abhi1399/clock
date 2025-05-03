@@ -170,3 +170,8 @@ public class BerkelyAlgorithm {
         return time + " | " + year + "-" + month + "-" + day;
     }
 }
+//covert  into mili
+server-client
+avg
+avg-diff
+orignal+offset
