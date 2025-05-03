@@ -90,14 +90,21 @@ public class BerkelyAlgorithm {
         String[] timeString = new String[1 + clientCount];  // 1 server + clientCount clients
 
         for (int i = 0; i < timeString.length; i++) {
-            if (i == 0) {
-                System.out.print("Enter time displayed in Server (HH:mm): ");
-            } else {
-                System.out.print("Enter time displayed in Client " + i + " (HH:mm): ");
-            }
+            while (true) {
+                if (i == 0) {
+                    System.out.print("Enter time displayed in Server (HH:mm): ");
+                } else {
+                    System.out.print("Enter time displayed in Client " + i + " (HH:mm): ");
+                }
 
-            String time = sc.nextLine();
-            timeString[i] = appendCurrentDateToTime(time);
+                String time = sc.nextLine();
+                if (isValidTime(time)) {
+                    timeString[i] = appendCurrentDateToTime(time);
+                    break;
+                } else {
+                    System.out.println(" Invalid time! Please enter in HH:mm format (00–23:00–59).");
+                }
+            }
         }
 
         System.out.println("\nBefore Synchronization");
@@ -135,7 +142,7 @@ public class BerkelyAlgorithm {
             avg += differenceInTimeWithServer[i];
         }
         avg /= n;
-        System.out.println("Fault tolerant average = " + avg / (1000 * 60));    // Displaying fault-tolerant average in minutes
+        System.out.println("Fault tolerant average = " + avg / (1000 * 60) + " minutes");
 
         // Adjusting the time in Server and Clients
         for (int i = 0; i < n; i++) {
@@ -144,7 +151,7 @@ public class BerkelyAlgorithm {
             if (i == 0) {
                 continue;
             }
-            System.out.println("Clock " + i + " adjustment = " + offset / (1000 * 60)); // Displaying adjustment value in minutes
+            System.out.println("Clock " + i + " adjustment = " + offset / (1000 * 60) + " minutes");
         }
 
         // Converting milliseconds to actual time
@@ -169,7 +176,19 @@ public class BerkelyAlgorithm {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         return time + " | " + year + "-" + month + "-" + day;
     }
+
+    private static boolean isValidTime(String time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        sdf.setLenient(false);
+        try {
+            sdf.parse(time);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
 }
+
 //covert  into mili
 server-client
 avg
